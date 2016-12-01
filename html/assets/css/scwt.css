@@ -111,6 +111,13 @@ a {
     }
 }
 
+/* Small devices (phones, up to 480px) */
+@media (max-width: 480px) {
+    #navbar {
+        width: 90%;
+    }
+}
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 980px) {
     .carousel {

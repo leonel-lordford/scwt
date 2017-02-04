@@ -5,8 +5,8 @@ class Stories_model extends CI_Model {
     public $id;
     public $title;
     public $summary;
-    public $description;
     public $cover_image;
+    public $external_link;
 
     public function __construct() {
         parent::__construct();
@@ -24,4 +24,26 @@ class Stories_model extends CI_Model {
 
         return $query->result_array();
     }
+
+    public function get_story($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get($this->table_name);
+
+        return $query->first_row();
+    }
+
+    public function update($data) {
+        if(count($data)) {
+            $this->id = $data['id'];
+            $this->title = $data['title'];
+            $this->summary = $data['summary'];
+            $this->cover_image = $data['cover_image'];
+            $this->external_link = $data['external_link'];
+
+            return $this->db->update($this->table_name, $this,
+                array('id' => $this->id));
+        }
+    }
 }
+
+// $this->db->delete('mytable', array('id' => $id));  // Produces: // DELETE FROM mytable  // WHERE id = $id

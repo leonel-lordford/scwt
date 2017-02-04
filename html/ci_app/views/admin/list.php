@@ -41,7 +41,7 @@
                             echo '<tr>
                                     <td>'. anchor('admin/edit/s/'. $s['id'], $s['title']) .'</td>
                                     <td>
-                                        '. anchor('admin/del/s/'. $s['id'], '<span class="glyphicon glyphicon-trash"></span>') .'
+                                        <span class="glyphicon glyphicon-trash" onclick="javascript:confirm_delete()"></span>
                                     </td>
                                 </tr>';
                         }
@@ -55,8 +55,14 @@
 
         <script src="<?php echo base_url("assets/js/jquery.min.js"); ?>"></script>
         <script src="<?php echo base_url("assets/bootstrap/js/bootstrap.min.js"); ?>"></script>
-        <script src="<?php echo base_url("assets/js/holder.min.js"); ?>"></script>
         <script src="<?php echo base_url("assets/js/ie10-viewport-bug-workaround.js"); ?>"></script>
         <script src="<?php echo base_url("assets/js/admin.js"); ?>"></script>
     </body>
 </html>
+<!--
+icono de eliminar
+<td>
+'. anchor('admin/del/s/'. $s['id'], '<span class="glyphicon glyphicon-trash" onclick="javascript:confirm_delete()"></span>') .'
+</td>
+
+                                    -->

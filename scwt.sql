@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2016 at 09:56 AM
--- Server version: 5.5.53-0+deb8u1
--- PHP Version: 5.6.27-0+deb8u1
+-- Generation Time: Feb 03, 2017 at 10:36 PM
+-- Server version: 5.5.54-0+deb8u1
+-- PHP Version: 5.6.29-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -99,7 +99,15 @@ CREATE TABLE IF NOT EXISTS `contact_us` (
   `comment` longtext COLLATE latin1_spanish_ci NOT NULL,
   `verification_code` varchar(32) COLLATE latin1_spanish_ci NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Dumping data for table `contact_us`
+--
+
+INSERT INTO `contact_us` (`id`, `name`, `email`, `comment`, `verification_code`, `verified`) VALUES
+(1, 'jjj', 'n@j.m', 'knn', 'agmD8VIl9CXbU7ecT6AZhijw3QyvRdnK', 0),
+(2, 'Abel', 'sorice@scwt.com', 'Texto de prueba...', 'wtjpW0s8FJoeCgP5GxXQn7au1NcV9zmE', 0);
 
 -- --------------------------------------------------------
 
@@ -144,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `static_images` (
 --
 
 INSERT INTO `static_images` (`id`, `overview_img_welcome`, `overview_img_transport`, `overview_img_accommodation`, `overview_img_tours`, `contact_img_yanet`, `contact_img_abel`, `contact_img_jane`) VALUES
-(1, 'assets/imgs/overview/KU1VkHar.png', 'assets/imgs/overview/pJR7Lfb3.png', 'assets/imgs/overview/accommodation3a.png', 'assets/imgs/overview/tours2a.png', 'assets/imgs/contact/yanet2a.png', 'assets/imgs/contact/abel2a.png', 'assets/imgs/contact/0sUhdzOb.png');
+(1, 'assets/imgs/overview/u9JfjFg5.png', 'assets/imgs/overview/pJR7Lfb3.png', 'assets/imgs/overview/accommodation3a.png', 'assets/imgs/overview/tours2a.png', 'assets/imgs/contact/yanet2a.png', 'assets/imgs/contact/abel2a.png', 'assets/imgs/contact/0sUhdzOb.png');
 
 -- --------------------------------------------------------
 
@@ -177,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `static_text` (
 --
 
 INSERT INTO `static_text` (`id`, `overview`, `overview_welcome`, `overview_transport`, `overview_accommodation`, `overview_tours`, `stories`, `friends`, `address`, `phone`, `email`, `contact_info_yanet`, `contact_info_abel`, `contact_info_jane`, `transport`, `accommodation`, `tours`) VALUES
-(1, 'This website is a family site for international cultural exchange. Our experience with friends and clients helped us figure out the needs of Cuba''s visitors. So our main goal is to help foreign friends who come to Cuba with basic and important things like lodging, transport, language barriers, free tours by means of this website about the real Cuba from our point of view.', 'We welcome you at the airport. Quick exchange on how to have a happy stay in Cuba.123', 'How to go from airport to "casa particular" in the city? How to go around the city?', 'Where to stay? A small hotel in the heart of the Cuban family!', 'Discover the real Cuba. Walk with us through our reality!', 'Never miss a story, live them with us.', 'Our friends are important to us and we listen to them always.', 'Calle B #13, e/ Maleza y 7ma, <p>Santa Clara, Villa Clara, Cuba. CP 85300.</p>', '+5353981601', 'info@santaclarawalkingtour.com', 'English, French and Italian professional interpreter. Digital journal translator and today tour guide at Cayo Santa María Tourist Resort in Villa Clara.', 'Python scientist, college professor for 12 years, now dedicated to Python technologies for language processing.', 'Yanet and Abel''s daughter! 6 years old, she likes to play for hours. Drawing skills for communication. Loves making new friends like us. We are encouraging her to learn English.', 'All you need to know about the kind of transport you can use during your trip.', 'Know and select the "Casa Particular" of your interest. Just very Cuban friendly "hostals" (lodging house) are listed. All checked!', 'Walk with us across the cities and its singularities.');
+(1, 'This website is a family site for international cultural exchange. Our experience with friends and clients helped us figure out the needs of Cuba''s visitors. So our main goal is to help foreign friends who come to Cuba with basic and important things like lodging, transport, language barriers, free tours by means of this website about the real Cuba from our point of view.', 'We welcome you at the airport. Quick exchange on how to have a happy stay in Cuba.', 'How to go from airport to "casa particular" in the city? How to go around the city?', 'Where to stay? A small hotel in the heart of the Cuban family!', 'Discover the real Cuba. Walk with us through our reality!', 'Never miss a story, live them with us.', 'Our friends are important to us and we listen to them always.', 'Calle B #13, e/ Maleza y 7ma, <p>Santa Clara, Villa Clara, Cuba. CP 85300.</p>', '+5353981601', 'info@santaclarawalkingtour.com', 'English, French and Italian professional interpreter. Digital journal translator and today tour guide at Cayo Santa María Tourist Resort in Villa Clara.', 'Python scientist, college professor for 12 years, now dedicated to Python technologies for language processing.', 'Yanet and Abel''s daughter! 6 years old, she likes to play for hours. Drawing skills for communication. Loves making new friends like us. We are encouraging her to learn English.', 'All you need to know about the kind of transport you can use during your trip.', 'Know and select the "Casa Particular" of your interest. Just very Cuban friendly "hostals" (lodging house) are listed. All checked!', 'Walk with us across the cities and its singularities.');
 
 -- --------------------------------------------------------
 
@@ -370,7 +378,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT for table `contact_us`
 --
 ALTER TABLE `contact_us`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `friends`
 --

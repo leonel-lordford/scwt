@@ -10,7 +10,7 @@ $route['transport'] = 'scwt/transport';
 $route['accommodation'] = 'scwt/accommodation';
 $route['tours'] = 'scwt/tours';
 $route['send_message'] = 'scwt/send_message';
-$route['verify_message/(:any)'] = 'scwt/verify_message';
+$route['verify_message/(:any)'] = 'scwt/verify_message/$1';
 
 // backend routes
 $route['admin'] = 'admin';
@@ -20,4 +20,6 @@ $route['admin/list/text'] = 'admin/listing/text';
 $route['admin/list/images'] = 'admin/listing/images';
 $route['admin/list/stories'] = 'admin/listing/stories';
 $route['admin/list/friends'] = 'admin/listing/friends';
+$route['admin/edit/s/(:num)'] = 'admin/edit_story/$1';
+$route['admin/del/s/(:num)'] = 'admin/remove_story/$1';
 $route['admin/logout'] = 'admin/logout';

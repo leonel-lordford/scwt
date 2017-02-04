@@ -60,6 +60,7 @@ a {
 */
     background-color: #f2f2f2;
     position: fixed;
+    top: 0;
     width: 100%;
     color: white;
 }
@@ -98,6 +99,13 @@ a {
     margin-left: 5px;
 }
 
+/* Small devices (phones, up to 480px) */
+@media (max-width: 480px) {
+    #navbar {
+        width: 90%;
+    }
+}
+
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     .carousel {
@@ -108,13 +116,6 @@ a {
     }
     .carousel-inner > .item > img {
         height: 400px;
-    }
-}
-
-/* Small devices (phones, up to 480px) */
-@media (max-width: 480px) {
-    #navbar {
-        width: 90%;
     }
 }
 

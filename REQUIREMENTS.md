@@ -18,7 +18,14 @@ TODO
 
 ## Nginx
 
-TODO
+Installed packages:
+
+* nginx
+* nginx-common
+* nginx-doc
+* nginx-full
+
+
 
 
 

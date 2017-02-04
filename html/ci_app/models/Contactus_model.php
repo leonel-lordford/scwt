@@ -26,14 +26,12 @@ class ContactUs_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function new_message($data) {
+    public function new_message($data, $code) {
         if(count($data)) {
             $this->name = $data['name'];
             $this->email = $data['email'];
             $this->comment = $data['message'];
-            // generate verification code (len = 32)
-            $this->load->helper('string');
-            $this->verification_code = random_string('alnum', 32);
+            $this->verification_code = $code;
             $this->verified = false;
 
             return $this->db->insert($this->table_name, $this);

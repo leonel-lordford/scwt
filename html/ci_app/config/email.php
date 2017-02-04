@@ -6,6 +6,8 @@ $config['mailpath'] = '/usr/sbin/sendmail';
 $config['charset'] = 'iso-8859-1';
 $config['wordwrap'] = TRUE;
 
+
+
 $config['protocol']    = 'smtp';
 $config['smtp_host']    = 'ssl://smtp.gmail.com';
 $config['smtp_port']    = '465';
@@ -16,6 +18,8 @@ $config['charset']    = 'utf-8';
 $config['newline']    = "\r\n";
 $config['mailtype'] = 'text'; // or html
 $config['validation'] = TRUE; // bool whether to validate email or not
+
+
 
 //// puede ser esta
 $config['useragent'] = 'CodeIgniter';

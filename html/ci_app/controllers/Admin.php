@@ -24,7 +24,7 @@ class Admin extends CI_Controller {
             $this->form_validation->set_rules('username', 'Username', 'trim|required');
             $this->form_validation->set_rules('password', 'Password', 'trim|required');
             // $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
-      //       $this->form_validation->set_rules('resumem', 'Resumen', 'required',
+            // $this->form_validation->set_rules('resumem', 'Resumen', 'required',
             //         array('required' => 'Debe escribir el %s de la historia.')
             // );
 
@@ -70,14 +70,7 @@ class Admin extends CI_Controller {
         $cap = create_captcha($vals);
 
         // TODO
-        // $data = array(
-        //         'captcha_time'  => $cap['time'],
-        //         'ip_address'    => $this->input->ip_address(),
-        //         'word'          => $cap['word']
-        // );
-
-        // $query = $this->db->insert_string('captcha', $data);
-        // $this->db->query($query);
+        // insert captcha in DB
 
         if($cap) {
             $view_context['captcha'] = $cap['image'];
@@ -253,12 +246,82 @@ class Admin extends CI_Controller {
                 $this->load->view('admin/staticimages', $view_context);
             break;
             case "stories":
-                echo "Listing stories";
+                $this->load->model('stories_model');
+
+                if(count($this->input->post())) {
+                    // load validations
+                    $this->load->library('form_validation');
+                    // set rules
+                    $this->form_validation->set_rules('overview', 'Overview heading', 'trim|required');
+                    $this->form_validation->set_rules('overview_welcome', 'Overview welcome', 'trim|required');
+                    $this->form_validation->set_rules('overview_transport', 'Overview transport', 'trim|required');
+                    $this->form_validation->set_rules('overview_accommodation', 'Overview accommodation', 'trim|required');
+                    $this->form_validation->set_rules('overview_tours', 'Overview tours', 'trim|required');
+                    $this->form_validation->set_rules('stories', 'Stories heading', 'trim|required');
+                    $this->form_validation->set_rules('friends', 'Friends heading', 'trim|required');
+                    $this->form_validation->set_rules('address', 'Address', 'trim|required');
+                    $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
+                    $this->form_validation->set_rules('email', 'Email', 'trim|required');
+                    $this->form_validation->set_rules('contact_info_yanet', 'Contact info: Yanet', 'trim|required');
+                    $this->form_validation->set_rules('contact_info_abel', 'Contact info: Abel', 'trim|required');
+                    $this->form_validation->set_rules('contact_info_jane', 'Contact info: Jane', 'trim|required');
+                    $this->form_validation->set_rules('transport', 'Transport heading', 'trim|required');
+                    $this->form_validation->set_rules('accommodation', 'Accommodation heading', 'trim|required');
+                    $this->form_validation->set_rules('tours', 'Tours heading', 'trim|required');
+
+                    // $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
+              //       $this->form_validation->set_rules('resumem', 'Resumen', 'required',
+                    //         array('required' => 'Debe escribir el %s de la historia.')
+                    // );
+
+                    if($this->form_validation->run()) {
+                        // load array helper
+                        $this->load->helper('array');
+                        // using elements from array helper to extract data from post
+                        $items = array(
+                            "id", "overview", "overview_welcome",
+                            "overview_transport", "overview_accommodation",
+                            "overview_tours", "stories", "friends",
+                            "address", "phone", "email", "contact_info_yanet",
+                            "contact_info_abel", "contact_info_jane",
+                            "transport", "accommodation", "tours"
+                        );
+
+                        // update database
+                        $result = $this->statictext_model->update(elements($items, $this->input->post()));
+
+                        if($result) {
+                            $view_context['data_saved'] = "Data saved.";
+                        }
+                        else {
+                            $error_msg = $this->db->error()['message'];
+                            $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+                        }
+                    }
+                }
+
+                $view_context['section_title'] = "Stories";
+                $view_context['stories'] = $this->stories_model->get_stories(10);
+
+                // load helper and view
+                $this->load->view('admin/list', $view_context);
             break;
             case "friends":
                 echo "Listing friends comments";
             break;
         }
+    }
+
+    public function edit_story($id) {
+        $userdata = $this->session->userdata;
+
+        echo "EDIT: " . $id;
+    }
+
+    public function remove_story($id) {
+        $userdata = $this->session->userdata;
+
+        echo "DEL: " . $id;
     }
 
     private function is_valid_user() {

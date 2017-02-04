@@ -172,11 +172,17 @@ class Scwt extends CI_Controller {
             $items = array(
                 "name", "email", "message"
             );
-
+            // generate verification code (len = 32)
+            $this->load->helper('string');
+            $code = random_string('alnum', 32);
             // insert new message
-            $result = $this->contactus_model->new_message(elements($items, $this->input->post()));
+            $result = $this->contactus_model->new_message(elements($items,
+                $this->input->post()), $code);
 
             if($result) {
+                // echo site_url('verify_message') . '/' . $code;
+                // die();
+
                 // send verification code
                 // $this->load->library('email');
 
@@ -224,9 +230,34 @@ class Scwt extends CI_Controller {
     public function verify_message($key) {
         $view_context = array();
 
-        echo $key;
-
         // use here a captcha image to verify HUMAN ACTION
+        // captcha
+        $this->load->helper('captcha');
+        $vals = array(
+            'img_path' => './captcha/',
+            'img_url' => base_url('captcha/'),
+            'expiration' => 120,
+            'colors' => array(
+                'background' => array(255, 255, 255),
+                'border' => array(255, 255, 255),
+                'text' => array(0, 0, 0),
+                'grid' => array(255, 40, 40)
+            )
+        );
+
+        $cap = create_captcha($vals);
+
+        // TODO
+        // insert captcha in DB
+
+        if($cap) {
+            $view_context['captcha'] = $cap['image'];
+            $view_context['key'] = $key;
+        }
+
+        // load helper and view
+        $this->load->helper('form');
+        $this->load->view('verify_code', $view_context);
     }
 
     // helpers

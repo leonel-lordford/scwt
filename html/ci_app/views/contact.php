@@ -85,6 +85,12 @@
                             <li class="gplus">
                                 <a href="http://plus.google.com/santaclarawalkingtour"><span class="fa fa-google-plus-square fa-2x"></span></a>
                             </li>
+                            <li class="youtube">
+                                <a href="http://instagram.com/santaclarawalkingtour"><span class="fa fa-instagram fa-2x"></span></a>
+                            </li>
+                            <li class="instagram">
+                                <a href="http://youtube.com/santaclarawalkingtour"><span class="fa fa-youtube-square fa-2x"></span></a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-sm-offset-1 col-sm-4">

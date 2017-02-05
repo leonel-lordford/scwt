@@ -248,58 +248,6 @@ class Admin extends CI_Controller {
             case "stories":
                 $this->load->model('stories_model');
 
-                if(count($this->input->post())) {
-                    // load validations
-                    $this->load->library('form_validation');
-                    // set rules
-                    $this->form_validation->set_rules('overview', 'Overview heading', 'trim|required');
-                    $this->form_validation->set_rules('overview_welcome', 'Overview welcome', 'trim|required');
-                    $this->form_validation->set_rules('overview_transport', 'Overview transport', 'trim|required');
-                    $this->form_validation->set_rules('overview_accommodation', 'Overview accommodation', 'trim|required');
-                    $this->form_validation->set_rules('overview_tours', 'Overview tours', 'trim|required');
-                    $this->form_validation->set_rules('stories', 'Stories heading', 'trim|required');
-                    $this->form_validation->set_rules('friends', 'Friends heading', 'trim|required');
-                    $this->form_validation->set_rules('address', 'Address', 'trim|required');
-                    $this->form_validation->set_rules('phone', 'Phone', 'trim|required');
-                    $this->form_validation->set_rules('email', 'Email', 'trim|required');
-                    $this->form_validation->set_rules('contact_info_yanet', 'Contact info: Yanet', 'trim|required');
-                    $this->form_validation->set_rules('contact_info_abel', 'Contact info: Abel', 'trim|required');
-                    $this->form_validation->set_rules('contact_info_jane', 'Contact info: Jane', 'trim|required');
-                    $this->form_validation->set_rules('transport', 'Transport heading', 'trim|required');
-                    $this->form_validation->set_rules('accommodation', 'Accommodation heading', 'trim|required');
-                    $this->form_validation->set_rules('tours', 'Tours heading', 'trim|required');
-
-                    // $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
-              //       $this->form_validation->set_rules('resumem', 'Resumen', 'required',
-                    //         array('required' => 'Debe escribir el %s de la historia.')
-                    // );
-
-                    if($this->form_validation->run()) {
-                        // load array helper
-                        $this->load->helper('array');
-                        // using elements from array helper to extract data from post
-                        $items = array(
-                            "id", "overview", "overview_welcome",
-                            "overview_transport", "overview_accommodation",
-                            "overview_tours", "stories", "friends",
-                            "address", "phone", "email", "contact_info_yanet",
-                            "contact_info_abel", "contact_info_jane",
-                            "transport", "accommodation", "tours"
-                        );
-
-                        // update database
-                        $result = $this->statictext_model->update(elements($items, $this->input->post()));
-
-                        if($result) {
-                            $view_context['data_saved'] = "Data saved.";
-                        }
-                        else {
-                            $error_msg = $this->db->error()['message'];
-                            $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
-                        }
-                    }
-                }
-
                 $view_context['section_title'] = "Stories";
                 $view_context['stories'] = $this->stories_model->get_stories(10);
 
@@ -308,7 +256,14 @@ class Admin extends CI_Controller {
                 $this->load->view('admin/list', $view_context);
             break;
             case "friends":
-                echo "Listing friends comments";
+                $this->load->model('friends_model');
+
+                $view_context['section_title'] = "Friends";
+                $view_context['comments'] = $this->friends_model->get_comments(10);
+
+                // load helper and view
+                $this->load->helper('form');
+                $this->load->view('admin/list', $view_context);
             break;
         }
     }
@@ -331,19 +286,11 @@ class Admin extends CI_Controller {
             $this->form_validation->set_rules('summary', 'Summary', 'trim|required');
             $this->form_validation->set_rules('external_link', 'See more link', 'trim|required');
 
-            // $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
-      //       $this->form_validation->set_rules('resumem', 'Resumen', 'required',
-            //         array('required' => 'Debe escribir el %s de la historia.')
-            // );
-
             if($this->form_validation->run()) {
                 // upload file and process new image
                 // config options
                 $config['upload_path'] = './uploads/';
                 $config['allowed_types'] = 'gif|jpg|jpeg|png';
-                // $config['max_size'] = 0;
-                // $config['max_width'] = 1024;
-                // $config['max_height'] = 768;
 
                 // load upload library
                 $this->load->library('upload', $config);
@@ -388,7 +335,6 @@ class Admin extends CI_Controller {
                     $view_context['errors'] = "Operation failed, please try again. Error: can't move file to destination dir, please check directory permissions.";
                 }
             }
-            //TODO validar con JS los campos vacíos...
         }
 
         $view_context['section_title'] = "Stories";
@@ -396,7 +342,13 @@ class Admin extends CI_Controller {
             redirect("admin");
         }
 
-        $view_context['story'] = $this->stories_model->get_story($id);
+        $story = $this->stories_model->get_story($id);
+        if ($story) {
+            $view_context['story'] = $story;
+        }
+        else {
+            redirect('admin/list/stories');
+        }
 
         // load helper and view
         $this->load->helper('form');
@@ -505,11 +457,205 @@ class Admin extends CI_Controller {
                     $view_context['errors'] = "Operation failed, please try again. Error: can't move file to destination dir, please check directory permissions.";
                 }
             }
-            //TODO validar con JS los campos vacíos...
         }
 
         $view_context['section_title'] = "Stories";
         $view_context['story'] = "";
+
+        // load helper and view
+        $this->load->helper('form');
+        $this->load->view('admin/add', $view_context);
+    }
+
+    public function edit_comment($id) {
+        if(!$this->is_valid_user()) {
+            redirect('admin');
+            // set flash_data like in sessions to show temp data in login page
+        }
+
+        $this->load->model('friends_model');
+
+        $view_context = array();
+
+        if(count($this->input->post())) {
+            // load validations
+            $this->load->library('form_validation');
+            // set rules
+            $this->form_validation->set_rules('author', 'Author', 'trim|required');
+            $this->form_validation->set_rules('opinion', 'Opinion', 'trim|required');
+
+            if($this->form_validation->run()) {
+                // upload file and process new image
+                // config options
+                $config['upload_path'] = './uploads/';
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+
+                // load upload library
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('image')) {
+                    $dest_dir = "assets/imgs/friends/";
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: " . $this->upload->display_errors();
+                }
+                // generate new filename, eliminate common filename mistakes like
+                // spaces, hyphen, dots...
+                $dest = $dest_dir . random_string() . $this->upload->data('file_ext');
+
+                // move uploaded file to final destination
+                if(rename("uploads/" . $this->upload->data('orig_name'), $dest)) {
+                    // update database
+                    // load array helper
+                    $this->load->helper('array');
+                    // using elements from array helper to extract data from post
+                    $items = array(
+                        "id", "author", "opinion", "image"
+                    );
+                    // duplicate readonly input->post array and update new_image value
+                    $tmp_input = $this->input->post();
+                    $tmp_input['image'] = $dest;
+
+                    // update database
+                    $result = $this->friends_model->update(elements($items, $tmp_input));
+
+                    if($result) {
+                        $view_context['data_saved'] = "Data saved.";
+                    }
+                    else {
+                        $error_msg = $this->db->error()['message'];
+                        $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+                    }
+
+
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: can't move file to destination dir, please check directory permissions.";
+                }
+            }
+        }
+
+        $view_context['section_title'] = "Friends";
+        if (!isset($id)) {
+            redirect("admin/list/friends");
+        }
+
+        $comment = $this->friends_model->get_comment($id);
+        if ($comment) {
+            $view_context['comment'] = $comment;
+        }
+        else {
+            redirect('admin/list/friends');
+        }
+
+        // load helper and view
+        $this->load->helper('form');
+        $this->load->view('admin/edit', $view_context);
+
+        // $userdata = $this->session->userdata;
+    }
+
+    public function remove_comment() {
+        if(!$this->is_valid_user()) {
+            redirect('admin');
+            // set flash_data like in sessions to show temp data in login page
+        }
+
+        $this->load->model('friends_model');
+
+        $view_context = array();
+
+        if(count($this->input->post())) {
+            $this->load->helper('array');
+            $items = array(
+                "id"
+            );
+            // delete from database
+            $result = $this->friends_model->delete(elements($items, $this->input->post()));
+
+            if($result) {
+                $view_context['data_saved'] = "Data deleted.";
+            }
+            else {
+                $error_msg = $this->db->error()['message'];
+                $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+            }
+
+            $view_context['section_title'] = "Friends";
+            $view_context['comments'] = $this->friends_model->get_comments(10);
+
+            // load helper and view
+            $this->load->helper('form');
+            $this->load->view('admin/list', $view_context);
+        }
+        else {
+            redirect("admin/list/friends");
+        }
+    }
+
+    public function add_comment() {
+        $view_context = array();
+
+        $this->load->model('friends_model');
+
+        if(count($this->input->post())) {
+            // load validations
+            $this->load->library('form_validation');
+            // set rules
+            $this->form_validation->set_rules('author', 'Author', 'trim|required');
+            $this->form_validation->set_rules('opinion', 'Opinion', 'trim|required');
+
+            if($this->form_validation->run()) {
+                // upload file and process new image
+                // config options
+                $config['upload_path'] = './uploads/';
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+
+                // load upload library
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('image')) {
+                    $dest_dir = "assets/imgs/friends/";
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: " . $this->upload->display_errors();
+                }
+                // generate new filename, eliminate common filename mistakes like
+                // spaces, hyphen, dots...
+                $dest = $dest_dir . random_string() . $this->upload->data('file_ext');
+
+                // move uploaded file to final destination
+                if(rename("uploads/" . $this->upload->data('orig_name'), $dest)) {
+                    // update database
+                    // load array helper
+                    $this->load->helper('array');
+                    // using elements from array helper to extract data from post
+                    $items = array(
+                        "author", "opinion", "image"
+                    );
+                    // duplicate readonly input->post array and update new_image value
+                    $tmp_input = $this->input->post();
+                    $tmp_input['image'] = $dest;
+
+                    // insert in database
+                    $result = $this->friends_model->add(elements($items, $tmp_input));
+
+                    if($result) {
+                        $view_context['data_saved'] = "Comment \"". $tmp_input['author'] . " - " . word_limiter($tmp_input['opinion'], 10) ."\" added.";
+                    }
+                    else {
+                        $error_msg = $this->db->error()['message'];
+                        $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+                    }
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: can't move file to destination dir, please check directory permissions.";
+                }
+            }
+        }
+
+        $view_context['section_title'] = "Friends";
+        $view_context['comment'] = "";
 
         // load helper and view
         $this->load->helper('form');

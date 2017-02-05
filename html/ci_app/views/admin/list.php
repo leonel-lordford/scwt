@@ -29,20 +29,28 @@
             <div class="row">
                 <?php
                     if(isset($errors)) {
-                        echo "<p><b>". $errors ."</b></p>";
+                        echo '<div class="alert alert-error alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                                <strong>' . $errors . '</strong>
+                                </div>';
                     }
                     else {
                         if(isset($data_saved)) {
-                            echo "<p><b>". $data_saved ."</b></p>";
+                            echo '<div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                                <strong>' . $data_saved . '</strong>
+                                </div>';
                         }
                     }
                 ?>
-                <?php echo anchor('admin/add/s', 'New story'); ?>
             </div>
-            <div class="row"><hr></div>
             <?php
                 switch ($section_title) {
                     case 'Stories':
+                        echo anchor('admin/add/s', 'New story');
+                        echo '<div class="row"><hr></div>';
                         echo '<div class="row">
                             <table class="table">
                                 <thead>
@@ -66,6 +74,48 @@
                                               </div>
                                               <div class="modal-body">
                                                 Delete story <b>"'. $s['title'] .'"</b>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        '. form_close() .'
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</tbody>
+                            </table>
+                        </div>';
+                        break;
+                        case 'Friends':
+                        echo anchor('admin/add/c', 'New comment');
+                        echo '<div class="row"><hr></div>';
+                        echo '<div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>List of friend comments (top 10)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+                        foreach ($comments as $c) {
+                            echo '<tr>
+                                    <td>'. anchor('admin/edit/c/'. $c['id'], $c['author'] . " - " . word_limiter($c['opinion'], 10)) .'</td>
+                                    <td>'. form_open('admin/del/c/') . form_hidden('id', $c['id']) .'
+                                        <span class="hand glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirm"></span>
+                                        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirm_label" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="confirm_label">Confirm</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                Delete story <b>"'. $c["author"] . " - " . word_limiter($c["opinion"], 10) .'"</b>
                                               </div>
                                               <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

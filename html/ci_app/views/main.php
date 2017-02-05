@@ -6,6 +6,7 @@
                     <div class="text-center">
                         <h1 class="section-title">Overview</h1>
                         <p class="text-justify lead-small"><?php if (isset($overview_summary)) echo $overview_summary; else echo "Overview"; ?></p>
+                        <p>Info...</p>
                     </div>
                 </div>
             </div>
@@ -107,6 +108,7 @@
                                 <div class='col-sm-7'>
                                     <h2 class='featurette-heading'>". $s['title'] ."</h2>
                                     <p class='lead'>". $s['summary'] ."</p>
+                                    <p><a class='btn lead-small' href='". $s['external_link'] ."' role='button'><i class='fa fa-external-link'>&nbsp;</i>View more &raquo;</a></p>
                                 </div>
                                 <div class='col-sm-5 gallery'>
                                     <a href='". base_url($s['cover_image']) ."' rel='prettyPhoto[s". $s['id'] ."]'>".
@@ -122,6 +124,7 @@
                                 <div class='col-sm-7 col-sm-push-5'>
                                     <h2 class='featurette-heading'>". $s['title'] ."</h2>
                                     <p class='lead'>". $s['summary'] ."</p>
+                                    <p><a class='btn lead-small' href='". $s['external_link'] ."' role='button'><i class='fa fa-external-link'>&nbsp;</i>View more &raquo;</a></p>
                                 </div>
                                 <div class='col-sm-5 col-sm-pull-7 gallery'>
                                     <a href='". base_url($s['cover_image']) ."' rel='prettyPhoto[s". $s['id'] ."]'>".
@@ -173,7 +176,7 @@
                         </div>
                         <div class='col-sm-9'>
                             <blockquote>
-                                <p><em>'". $friends['opinion'] ."'</em></p>
+                                <p><em>\"". $friends['opinion'] ."\"</em></p>
                                 <small><cite title='author'>". $friends['author'] ."</cite></small>
                             </blockquote>
                         </div>

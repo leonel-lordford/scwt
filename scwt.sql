@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2017 at 10:36 PM
+-- Generation Time: Feb 05, 2017 at 12:54 PM
 -- Server version: 5.5.54-0+deb8u1
 -- PHP Version: 5.6.29-0+deb8u1
 
@@ -120,15 +120,16 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `image` text COLLATE latin1_spanish_ci NOT NULL,
   `opinion` text COLLATE latin1_spanish_ci NOT NULL,
   `author` varchar(100) COLLATE latin1_spanish_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 --
 -- Dumping data for table `friends`
 --
 
 INSERT INTO `friends` (`id`, `image`, `opinion`, `author`) VALUES
-(1, 'assets/imgs/friends/20160421_Alessandra.png', '"Thank you very much for everything! For opening the doors of your home, heart and family. Cuba wouldn''t have been the same without you, guys. Thank you for taking care of me and helping me in everything"', 'Alessandra Feruglio'),
-(2, 'assets/imgs/friends/20160921_Leo.png', 'I felt loved by you, and glad with the city tours. The travel was worth every second. I will return with my girlfriend to wander about the city of Santa Clara.', 'Leonel Salazar');
+(1, 'assets/imgs/friends/swbExZK9.png', 'Thank you very much for everything! For opening the doors of your home, heart and family. Cuba wouldn''t have been the same without you, guys. Thank you for taking care of me and helping me in everything', 'Alessandra Feruglio'),
+(2, 'assets/imgs/friends/20160921_Leo.png', 'I felt loved by you, and glad with the city tours. The travel was worth every second. I will return with my girlfriend to wander about the city of Santa Clara.', 'Leonel Salazar'),
+(7, 'assets/imgs/friends/U85vpTC0.jpg', 'fff', 'ffff');
 
 -- --------------------------------------------------------
 
@@ -197,18 +198,18 @@ CREATE TABLE IF NOT EXISTS `stories` (
 `id` int(11) NOT NULL,
   `title` varchar(100) COLLATE latin1_spanish_ci NOT NULL,
   `summary` varchar(600) COLLATE latin1_spanish_ci NOT NULL,
-  `description` text COLLATE latin1_spanish_ci NOT NULL,
-  `cover_image` text COLLATE latin1_spanish_ci NOT NULL
+  `cover_image` text COLLATE latin1_spanish_ci NOT NULL,
+  `external_link` varchar(250) COLLATE latin1_spanish_ci NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 --
 -- Dumping data for table `stories`
 --
 
-INSERT INTO `stories` (`id`, `title`, `summary`, `description`, `cover_image`) VALUES
-(1, 'Ireland knock, knock', 'I was heading home from the school where I was teaching at the time when I saw him. He was on a corner and seemed indecisive so I dared to ask: "Hi, are you looking for something?". Sean O''Halloran, from Ireland, looked definitely relieved of having finally found someone who spoke his language. "Yes, I''m looking for a casa particular where I could stay the night". So I took him to one and he asked me later if I was free the next day and if I could show him some interesting places in Santa Clara. He gave us this wonderful idea of creating the website.', '', 'assets/imgs/stories/IMG_6664.JPG'),
-(2, 'Sharing with West Canada', 'Leo and Margaret are two of our first Canadian friends. They come from Vancouver. Nice, humble, and talkative like us. Their last visit had been 10 years ago. We met them while selling souvenirs in a craft market in Cayo Santa Maria. Now old and intrigued they ask a lot about the new Cuban reality. We share a lot, and today we are still communicating. They want to come back in the near future.', '', 'assets/imgs/stories/20160216_Margaret_and_Leo.JPG'),
-(3, 'Italy, surprise!', 'Alessa came to Cuba after 3 months in Brazil. Her family had come here with the idea of seeing "the last of Cuba"; but new Cuba-US relations have changed nothing! Then we taught how her to travel across Cuba with very few resources. She returned with a big picture of our reality and good wishes. After exchanging experiences from her journey here and her vision about everything, we learned many things about our own country.', '', 'assets/imgs/stories/che_phrase.png');
+INSERT INTO `stories` (`id`, `title`, `summary`, `cover_image`, `external_link`) VALUES
+(1, 'Ireland knock, knock', 'I was heading home from the school where I was teaching at the time when I saw him. He was on a corner and seemed indecisive so I dared to ask: "Hi, are you looking for something?". Sean O''Halloran, from Ireland, looked definitely relieved of having finally found someone who spoke his language. "Yes, I''m looking for a casa particular where I could stay the night". So I took him to one and he asked me later if I was free the next day and if I could show him some interesting places in Santa Clara. He gave us this wonderful idea of creating the website.', 'assets/imgs/stories/Py5fMQjZ.png', 'http://localhost/scwt/index.php/admin/edit/s/1'),
+(2, 'Sharing with West Canada', 'Leo and Margaret are two of our first Canadian friends. They come from Vancouver. Nice, humble, and talkative like us. Their last visit had been 10 years ago. We met them while selling souvenirs in a craft market in Cayo Santa Maria. Now old and intrigued they ask a lot about the new Cuban reality. We share a lot, and today we are still communicating. They want to come back in the near future.', 'assets/imgs/stories/y2Bs7JeE.png', 'http://localhost/scwt/index.php/admin/edit/s/2'),
+(3, 'Italy, surprise!', 'Alessa came to Cuba after 3 months in Brazil. Her family had come here with the idea of seeing "the last of Cuba"; but new Cuba-US relations have changed nothing! Then we taught how her to travel across Cuba with very few resources. She returned with a big picture of our reality and good wishes. After exchanging experiences from her journey here and her vision about everything, we learned many things about our own country.', 'assets/imgs/stories/QJ5WM1Nv.png', 'http://localhost/scwt/index.php/admin/edit/s/2');
 
 -- --------------------------------------------------------
 
@@ -383,7 +384,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `friends`
 --
 ALTER TABLE `friends`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `static_images`
 --

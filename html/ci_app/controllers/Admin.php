@@ -304,6 +304,7 @@ class Admin extends CI_Controller {
                 $view_context['stories'] = $this->stories_model->get_stories(10);
 
                 // load helper and view
+                $this->load->helper('form');
                 $this->load->view('admin/list', $view_context);
             break;
             case "friends":
@@ -392,7 +393,7 @@ class Admin extends CI_Controller {
 
         $view_context['section_title'] = "Stories";
         if (!isset($id)) {
-            redirect("admin/manage");
+            redirect("admin");
         }
 
         $view_context['story'] = $this->stories_model->get_story($id);
@@ -404,10 +405,115 @@ class Admin extends CI_Controller {
         // $userdata = $this->session->userdata;
     }
 
-    public function remove_story($id) {
-        $userdata = $this->session->userdata;
+    public function remove_story() {
+        if(!$this->is_valid_user()) {
+            redirect('admin');
+            // set flash_data like in sessions to show temp data in login page
+        }
 
-        echo "DEL: " . $id;
+        $this->load->model('stories_model');
+
+        $view_context = array();
+
+        if(count($this->input->post())) {
+            $this->load->helper('array');
+            $items = array(
+                "id"
+            );
+            // delete from database
+            $result = $this->stories_model->delete(elements($items, $this->input->post()));
+
+            if($result) {
+                $view_context['data_saved'] = "Data deleted.";
+            }
+            else {
+                $error_msg = $this->db->error()['message'];
+                $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+            }
+
+            // load helper and view
+            $this->load->helper('form');
+            $view_context['section_title'] = "Stories";
+            $view_context['stories'] = $this->stories_model->get_stories(10);
+            $this->load->view('admin/list', $view_context);
+        }
+        else {
+            redirect("admin/list/stories");
+        }
+    }
+
+    public function add_story() {
+        $view_context = array();
+
+        $this->load->model('stories_model');
+
+        if(count($this->input->post())) {
+            // load validations
+            $this->load->library('form_validation');
+            // set rules
+            $this->form_validation->set_rules('title', 'Title', 'trim|required');
+            $this->form_validation->set_rules('summary', 'Summary', 'trim|required');
+            $this->form_validation->set_rules('external_link', 'See more link', 'trim|required');
+
+            if($this->form_validation->run()) {
+                // upload file and process new image
+                // config options
+                $config['upload_path'] = './uploads/';
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                // $config['max_size'] = 0;
+                // $config['max_width'] = 1024;
+                // $config['max_height'] = 768;
+
+                // load upload library
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('cover_image')) {
+                    $dest_dir = "assets/imgs/stories/";
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: " . $this->upload->display_errors();
+                }
+                // generate new filename, eliminate common filename mistakes like
+                // spaces, hyphen, dots...
+                $dest = $dest_dir . random_string() . $this->upload->data('file_ext');
+
+                // move uploaded file to final destination
+                if(rename("uploads/" . $this->upload->data('orig_name'), $dest)) {
+                    // update database
+                    // load array helper
+                    $this->load->helper('array');
+                    // using elements from array helper to extract data from post
+                    $items = array(
+                        "title", "summary", "cover_image", "external_link"
+                    );
+                    // duplicate readonly input->post array and update new_image value
+                    $tmp_input = $this->input->post();
+                    $tmp_input['cover_image'] = $dest;
+
+                    // insert in database
+                    $result = $this->stories_model->add(elements($items, $tmp_input));
+
+                    if($result) {
+                        $view_context['data_saved'] = "Story \"". $tmp_input['title'] ."\" added.";
+                    }
+                    else {
+                        $error_msg = $this->db->error()['message'];
+                        $view_context['errors'] = "Operation failed, please try again. Error: ". $error_msg;
+                    }
+                }
+                else {
+                    $view_context['errors'] = "Operation failed, please try again. Error: can't move file to destination dir, please check directory permissions.";
+                }
+            }
+            //TODO validar con JS los campos vacíos...
+        }
+
+        $view_context['section_title'] = "Stories";
+        $view_context['story'] = "";
+
+        // load helper and view
+        $this->load->helper('form');
+        $this->load->view('admin/add', $view_context);
     }
 
     private function is_valid_user() {

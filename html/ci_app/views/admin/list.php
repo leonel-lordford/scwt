@@ -8,6 +8,7 @@
         <meta name="author" content="">
         <title>Santa Clara Walking Tour<?php if(isset($title)) echo " - " . $title; else echo " - Admin" ?></title>
         <link href="<?php echo base_url("assets/bootstrap/css/bootstrap.css"); ?>" rel="stylesheet">
+        <link href="<?php echo base_url("assets/css/admin.css"); ?>" rel="stylesheet">
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -25,6 +26,20 @@
                 ?>
             </div>
             <div class="row"><hr></div>
+            <div class="row">
+                <?php
+                    if(isset($errors)) {
+                        echo "<p><b>". $errors ."</b></p>";
+                    }
+                    else {
+                        if(isset($data_saved)) {
+                            echo "<p><b>". $data_saved ."</b></p>";
+                        }
+                    }
+                ?>
+                <?php echo anchor('admin/add/s', 'New story'); ?>
+            </div>
+            <div class="row"><hr></div>
             <?php
                 switch ($section_title) {
                     case 'Stories':
@@ -40,8 +55,26 @@
                         foreach ($stories as $s) {
                             echo '<tr>
                                     <td>'. anchor('admin/edit/s/'. $s['id'], $s['title']) .'</td>
-                                    <td>
-                                        <span class="glyphicon glyphicon-trash" onclick="javascript:confirm_delete()"></span>
+                                    <td>'. form_open('admin/del/s/') . form_hidden('id', $s['id']) .'
+                                        <span class="hand glyphicon glyphicon-trash" data-toggle="modal" data-target="#confirm"></span>
+                                        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="confirm_label" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="confirm_label">Confirm</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                Delete story <b>"'. $s['title'] .'"</b>
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        '. form_close() .'
                                     </td>
                                 </tr>';
                         }

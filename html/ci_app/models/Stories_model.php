@@ -44,6 +44,24 @@ class Stories_model extends CI_Model {
                 array('id' => $this->id));
         }
     }
+
+    public function add($data) {
+        if(count($data)) {
+            $this->title = $data['title'];
+            $this->summary = $data['summary'];
+            $this->cover_image = $data['cover_image'];
+            $this->external_link = $data['external_link'];
+
+            return $this->db->insert($this->table_name, $this);
+        }
+    }
+
+    public function delete($data) {
+        if(count($data)) {
+            $this->db->where('id', $data['id']);
+            return $this->db->delete($this->table_name);
+        }
+    }
 }
 
 // $this->db->delete('mytable', array('id' => $id));  // Produces: // DELETE FROM mytable  // WHERE id = $id

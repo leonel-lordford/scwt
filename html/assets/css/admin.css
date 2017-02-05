@@ -1,0 +1,9 @@
+.hand {
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+    font-variant: small-caps;
+    margin-left: 5px;
+}

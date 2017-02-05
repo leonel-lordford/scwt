@@ -99,6 +99,10 @@ a {
     margin-left: 5px;
 }
 
+.hand {
+    cursor: pointer;
+}
+
 /* Small devices (phones, up to 480px) */
 @media (max-width: 480px) {
     #navbar {

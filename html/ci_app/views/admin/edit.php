@@ -8,6 +8,7 @@
         <meta name="author" content="">
         <title>Santa Clara Walking Tour<?php if(isset($title)) echo " - " . $title; else echo " - Admin" ?></title>
         <link href="<?php echo base_url("assets/bootstrap/css/bootstrap.css"); ?>" rel="stylesheet">
+        <link href="<?php echo base_url("assets/css/admin.css"); ?>" rel="stylesheet">
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -37,21 +38,26 @@
                             echo "<b>". $data_saved ."</b>";
                         }
                     }
-
-                    echo form_open_multipart('', 'class="text-center lead"');
+                ?>
+                <?php
+                if(isset($story)) {
+                    echo form_open_multipart('', 'id="form_story" class="text-center lead"');
                     echo form_hidden('id', $story->id);
                 ?>
                 <div class="form-group col-md-6">
                     <label class="control-label" for="title">Title</label>
+                    <span class="hidden error" id="title_error">* enter a valid title</span>
                     <textarea class="form-control" rows="4" id="title" name="title"><?php echo $story->title; ?></textarea>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="control-label" for="summary">Summary</label>
+                    <span class="hidden error" id="summary_error">* enter a valid summary</span>
                     <textarea class="form-control" rows="4" id="summary" name="summary"><?php echo $story->summary; ?></textarea>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="control-label" for="cover_image">Cover image</label>
-                    <?php echo form_upload('cover_image'); ?>
+                    <span class="hidden error" id="cover_image_error">* select a valid image</span>
+                    <?php echo form_upload('cover_image', "", 'id="cover_image"'); ?>
                     <b>Accepted filetypes: gif jpg jpeg png</b>
                     <?php
                     $image_properties = array(
@@ -65,12 +71,16 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label class="control-label" for="external_link">See more link</label>
+                    <span class="hidden error" id="external_link_error">* enter a valid link</span>
                     <textarea class="form-control" rows="2" id="external_link" name="external_link"><?php echo $story->external_link; ?></textarea>
                 </div>
                 <div class="form-group col-sm-12">
                     <button type="submit" class="btn" id="btn_submit">Save</button>
                 </div>
                 <?php echo form_close(); ?>
+                <?php
+                }
+                ?>
             </div>
         </div>
 
